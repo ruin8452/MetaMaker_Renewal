@@ -94,6 +94,7 @@ public class TimeLineSetter : MonoBehaviour
 
     void SetCurrTimeText(float currTime)
     {
+        CurrTime = currTime;
         CurrTimeText.text = currTime.ToString("0.00s");
         ChangeTimeLine?.Invoke(RunningTime, currTime);
     }

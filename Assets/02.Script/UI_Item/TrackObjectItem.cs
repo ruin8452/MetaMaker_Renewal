@@ -18,21 +18,15 @@ public class TrackObjectItem : MonoBehaviour
     public Toggle VisibleToggle;
     public Toggle LockToggle;
 
+    [HideInInspector] public UnityEvent<int> OnSelected_KeyFrame;
+    [HideInInspector] public UnityEvent<int, float> OnChagedValue_KeyFrame;
     [HideInInspector] public UnityEvent OnClick_DeleteUnit;
     [HideInInspector] public UnityEvent OnAdd_KeyFrame;
     [HideInInspector] public UnityEvent<bool> OnChagedValue_IsVisible;
     [HideInInspector] public UnityEvent<bool> OnChagedValue_IsLock;
-    [HideInInspector] public UnityEvent<int> OnSelected_KeyFrame;
-    [HideInInspector] public UnityEvent<int, float> OnChagedValue_KeyFrame;
 
-    float runningTime = 1f;
-    float currTime = 0f;
     List<KeyFrameItem> keyFrameList = new List<KeyFrameItem>();
 
-    private void Awake()
-    {
-        GameObject.FindGameObjectWithTag(Cache.TAG_TIMELINE_SETTER).GetComponent<TimeLineSetter>().ChangeTimeLine.AddListener(ListenChangeTimeLine);
-    }
 
     public void OnClick_DeleteAssetObject() => DeleteObject();
     void DeleteObject()
@@ -51,7 +45,7 @@ public class TrackObjectItem : MonoBehaviour
 
     public void OnToggle_IsLock(bool isLock) => OnChagedValue_IsLock?.Invoke(isLock);
 
-    public void OnClick_AddKeyFrame() => AddKeyFrame(currTime / runningTime);
+    public void OnClick_AddKeyFrame() => AddKeyFrame(TimeLineSetter.CurrTime / TimeLineSetter.RunningTime);
     void AddKeyFrame(float keyValue)
     {
         var newKeyFrame = Instantiate(KeyFrameSliderPrefab, KeyFrameArea).GetComponent<KeyFrameItem>();
@@ -77,17 +71,9 @@ public class TrackObjectItem : MonoBehaviour
             AddKeyFrame(value);
     }
 
-    void ListenChangeTimeLine(float runningTime, float currTime)
-    {
-        this.runningTime = runningTime;
-        this.currTime = currTime;
-    }
-
     void ListenChangedKeyValue(int index, float value)
     {
-        var time = value * runningTime;
-        Debug.Log($"Index : {index} - {time}");
-        OnChagedValue_KeyFrame?.Invoke(index, time);
+        OnChagedValue_KeyFrame?.Invoke(index, value);
     }
 
     void ListenSelectedKeyFrame(int index) => OnSelected_KeyFrame?.Invoke(index);

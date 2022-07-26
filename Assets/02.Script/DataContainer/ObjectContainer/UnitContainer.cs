@@ -135,18 +135,18 @@ public class UnitContainer : MonoBehaviour
         transformCompo.SetTransformComponent(KeyFrames[HandlingKeyNum].Position, KeyFrames[HandlingKeyNum].Rotation, KeyFrames[HandlingKeyNum].Scale);
     }
 
-    void ChangedKeyValue(int index, float time)
+    void ChangedKeyValue(int index, float percent)
     {
         HandlingKeyNum = index;
-        KeyFrames[index].Time = time;
+        KeyFrames[index].Percent = percent;
     }
 
     public void PlaySimulateUnit()
     {
-        var sortedKeyFrames = KeyFrames.OrderBy(x => x.Time).ToList();
+        var sortedKeyFrames = KeyFrames.OrderBy(x => x.Percent).ToList();
 
         var firstKey = (KeyFrame)sortedKeyFrames.First().Clone();
-        firstKey.Time = 0;
+        firstKey.Percent = 0;
         sortedKeyFrames.Insert(0, firstKey);
 
         simulCoroutine = StartCoroutine(SimulateUnitCoroutine(sortedKeyFrames));
@@ -164,7 +164,7 @@ public class UnitContainer : MonoBehaviour
 
         for (int i = 0; i < sortedKeyFrames.Count - 1; i++)
         {
-            deltaTime = sortedKeyFrames[i+1].Time - sortedKeyFrames[i].Time;
+            deltaTime = (sortedKeyFrames[i+1].Percent * TimeLineSetter.RunningTime) - (sortedKeyFrames[i].Percent * TimeLineSetter.RunningTime);
             float currTime = 0;
 
             while (deltaTime >= currTime)
@@ -190,14 +190,14 @@ public class KeyFrame : ICloneable
     public Vector3 Position;
     public Vector3 Rotation;
     public Vector3 Scale;
-    public float Time;
+    public float Percent;
 
     public KeyFrame()
     {
         Position = Vector3.zero;
         Rotation = Vector3.zero;
         Scale = Vector3.one;
-        Time = 0;
+        Percent = 0;
     }
 
     public object Clone()
@@ -207,7 +207,7 @@ public class KeyFrame : ICloneable
             Position = this.Position,
             Rotation = this.Rotation,
             Scale = this.Scale,
-            Time = this.Time
+            Percent = this.Percent
         };
 
         return clone;
