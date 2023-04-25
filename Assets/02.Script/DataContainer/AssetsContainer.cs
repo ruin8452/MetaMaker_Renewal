@@ -1,4 +1,3 @@
-using Assets._02.Script.DataContainer;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -124,6 +123,11 @@ public class AssetsContainerManager
     AssetsContainerManager()
     {
         assetsContainer = JsonStorage.ReadJson<AssetsContainer>(PathStorage.ASSETS_LISTUP);
+        if (assetsContainer == null)
+        {
+            assetsContainer = new AssetsContainer();
+            assetsContainer.InitContainer();
+        }
     }
 
     public static AssetsContainerManager GetInstance()

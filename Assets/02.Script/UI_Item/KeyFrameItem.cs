@@ -3,36 +3,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class KeyFrameItem : MonoBehaviour
+public class KeyFrameItem : MonoBehaviour, IPointerDownHandler
 {
-    public int Index;
     public Slider slider;
-    float keyValue;
-    public float KeyValue
-    {
-        get { return keyValue; }
-        set { slider.value = keyValue = value; }
-    }
+    public GameObject SelectedKey;
 
-    [HideInInspector] public UnityEvent<int, float> OnChange_Key;
-    [HideInInspector] public UnityEvent<int> OnClick_SelectedKey;
+    // KeyFrame -> TrackObject
+    [HideInInspector] public UnityEvent<int, float> KeyValueChangeEvent;
+    [HideInInspector] public UnityEvent<int> SelectedKeyEvent;
+
+    public void OnValueChange_KeyValue(float percent)
+    {
+        SetKey(percent);
+    }
 
     public void SetKey(float percent)
     {
-        KeyValue = percent;
-        OnChange_Key?.Invoke(Index, KeyValue);
-    }
-
-    public void OnValueChange_MoveKeyFrame(float percent)
-    { 
-        keyValue = percent;
-        OnChange_Key?.Invoke(Index, KeyValue);
+        slider.value = percent;
+        KeyValueChangeEvent?.Invoke(transform.GetSiblingIndex() - 1, slider.value);
     }
 
     public void OnClick_SelecteKeyFrame()
     {
-        OnClick_SelectedKey?.Invoke(Index);
+    }
+
+    public void Deselect()
+    {
+        SelectedKey.SetActive(false);
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        SelectedKeyEvent?.Invoke(transform.GetSiblingIndex() - 1);
+        SelectedKey.SetActive(true);
     }
 }

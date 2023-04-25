@@ -1,4 +1,3 @@
-using Assets._02.Script.DataContainer;
 using System;
 using System.Collections;
 using System.Collections.Generic;

@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Ookii.Dialogs;
 using System.Windows.Forms;
-using TriLibCore;
 using System.IO;
 
 public class ModelContentMenu : MonoBehaviour
 {
     public Transform ModelAssetContentTransform;
     public GameObject ContentItemPrefab;
-    public AssetLoaderOptions AssetLoaderOption;
+    //public AssetLoaderOptions AssetLoaderOption;
     public Camera CaptureCamera;
 
     VistaOpenFileDialog openFileDialog;
@@ -40,7 +39,7 @@ public class ModelContentMenu : MonoBehaviour
         foreach (var modelFilePath in modelFilePaths)
         {
             GameObject newModelObject = Instantiate(ContentItemPrefab, ModelAssetContentTransform);
-            AssetLoader.LoadModelFromFileNoThread(modelFilePath, wrapperGameObject: newModelObject, assetLoaderOptions: AssetLoaderOption);
+            //AssetLoader.LoadModelFromFileNoThread(modelFilePath, wrapperGameObject: newModelObject, assetLoaderOptions: AssetLoaderOption);
 
             yield return Cache.CachingWaitForSecond(0.01f);
 

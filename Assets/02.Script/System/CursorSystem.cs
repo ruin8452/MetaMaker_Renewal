@@ -21,7 +21,7 @@ public class CursorSystem : MonoBehaviour
         SetCursor("Normal");
     }
 
-    public void SetCursor(string cursorType)
+    void SetCursor(string cursorType)
     {
         if (isDragging) return;
 
@@ -34,6 +34,16 @@ public class CursorSystem : MonoBehaviour
                 Cursor.SetCursor(SideCursor, cursorHotspot, CursorMode.ForceSoftware);
                 break;
         }
+    }
+
+    public void EnterPoint(string cursorType)
+    {
+        SetCursor(cursorType);
+    }
+
+    public void ExitPoint(string cursorType)
+    {
+        SetCursor(cursorType);
     }
 
     public void BegineDrag(string cursorType)

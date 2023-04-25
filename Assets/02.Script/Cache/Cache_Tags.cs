@@ -11,4 +11,6 @@ public partial class Cache
     public static string TAG_TIMELINE_SETTER = "TimeLineSetter";
     public static string TAG_OBJECT_OPTIONS = "ObjectOptions";
     public static string TAG_OBJECT_LIST = "ObjectList";
+    public static string TAG_CURSOR_SYSTEM = "CursorSystem";
+    public static string TAG_BLOCKER = "Blocker";
 }

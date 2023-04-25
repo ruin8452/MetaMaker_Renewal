@@ -11,7 +11,7 @@ public class PathStorage
     public static void CheckDefineDirectory()
     {
         DEBUG_PrintLog.PrintLog("<< Cache.ROOT_PATH : " + ASSETS_FOLDER);
-        DEBUG_PrintLog.PrintLog("<< Cache.SA_PATH : " + Application.streamingAssetsPath);
+        //DEBUG_PrintLog.PrintLog("<< Cache.SA_PATH : " + Application.streamingAssetsPath);
 
         if (!Directory.Exists(ASSETS_FOLDER))
             Directory.CreateDirectory(ASSETS_FOLDER);

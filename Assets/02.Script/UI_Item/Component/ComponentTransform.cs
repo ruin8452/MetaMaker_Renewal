@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class ComponentTransform : MonoBehaviour, IComponent
@@ -22,12 +23,13 @@ public class ComponentTransform : MonoBehaviour, IComponent
     public TMP_InputField InputScaY;
     public TMP_InputField InputScaZ;
 
+    [Header("< 트랜스폼 옵션 >")]
     public bool isLocal;
     public bool isScaleSync;
 
-    public Action<string, float> ChangeTanstformPos;
-    public Action<string, float> ChangeTanstformRot;
-    public Action<string, float> ChangeTanstformSca;
+    public UnityEvent<string, float> ChangeTanstformPos;
+    public UnityEvent<string, float> ChangeTanstformRot;
+    public UnityEvent<string, float> ChangeTanstformSca;
 
     public void OnClick_Copy()
     {

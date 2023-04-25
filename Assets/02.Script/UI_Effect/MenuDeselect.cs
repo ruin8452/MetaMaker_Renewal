@@ -5,11 +5,17 @@ using UnityEngine.UI;
 
 public class MenuDeselect : MonoBehaviour
 {
-    public GameObject BlockerPanel;
+    GameObject BlockerPanel;
 
     private void Awake()
     {
+        BlockerPanel = GameObject.FindGameObjectWithTag(Cache.TAG_BLOCKER).transform.GetChild(0).gameObject;
         BlockerPanel.GetComponent<Button>().onClick.AddListener(HideView);
+    }
+
+    private void OnEnable()
+    {
+        BlockerPanel.SetActive(true);
     }
 
     void HideView()

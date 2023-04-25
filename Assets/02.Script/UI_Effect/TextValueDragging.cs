@@ -5,15 +5,33 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class TextValueDragging : MonoBehaviour, IBeginDragHandler, IDragHandler
+public class TextValueDragging : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public TMP_InputField TargetText;
     public float DeltaChange = 0.1f;
 
     float currValue;
 
+    CursorSystem cursorSystem;
+
+    private void Awake()
+    {
+        cursorSystem = GameObject.FindGameObjectWithTag(Cache.TAG_CURSOR_SYSTEM).GetComponent<CursorSystem>();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        cursorSystem.EnterPoint("Side");
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        cursorSystem.ExitPoint("Normal");
+    }
+
     public void OnBeginDrag(PointerEventData eventData)
     {
+        cursorSystem.BegineDrag("Side");
         currValue = float.Parse(TargetText.text);
     }
 
@@ -45,5 +63,10 @@ public class TextValueDragging : MonoBehaviour, IBeginDragHandler, IDragHandler
         }
 
         TargetText.text = currValue.ToString("0.##");
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        cursorSystem.EndDrag("Normal");
     }
 }

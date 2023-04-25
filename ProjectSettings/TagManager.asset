@@ -11,6 +11,8 @@ TagManager:
   - TimeLineSetter
   - ObjectOptions
   - ObjectList
+  - CursorSystem
+  - Blocker
   layers:
   - Default
   - TransparentFX

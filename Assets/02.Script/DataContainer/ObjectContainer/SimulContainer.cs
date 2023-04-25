@@ -12,9 +12,6 @@ public class SimulContainer : MonoBehaviour
 
     List<StepContainer> stepObjects = new List<StepContainer>();
 
-    [HideInInspector] public UnityEvent<bool> OnPlay_Simaulate;
-    [HideInInspector] public UnityEvent OnStop_Simaulate;
-
     private void Awake()
     {
 
@@ -92,12 +89,14 @@ public class SimulContainer : MonoBehaviour
     }
 
 
-
+     
 
     public void OnClick_PlaySimulate()
     {
-        OnPlay_Simaulate?.Invoke(stepObjects[HandlingStepNum].DoLoop);
         stepObjects[HandlingStepNum].PlaySimulateStep();
     }
-    public void OnClick_StopSimulate() => OnStop_Simaulate?.Invoke();
+    public void OnClick_StopSimulate()
+    {
+        stepObjects[HandlingStepNum].StopSimulateStep();
+    }
 }

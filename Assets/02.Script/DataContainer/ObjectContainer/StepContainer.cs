@@ -19,7 +19,7 @@ public class StepContainer : MonoBehaviour
     Transform StepsAreaTransform;
     StepIndexBox stepIndexBox;
 
-    List<UnitContainer> unitObjects = new List<UnitContainer>();
+    List<IUnit> unitObjects = new List<IUnit>();
 
     private void Awake()
     {
@@ -54,15 +54,25 @@ public class StepContainer : MonoBehaviour
     {
         GameObject unitObject = Resources.Load<GameObject>($"_UnitPrefab/{unitConainer.UnitClass}");
 
-        var asset = Instantiate(unitObject, transform).GetComponent<UnitContainer>();
+        var asset = Instantiate(unitObject, transform).GetComponent<IUnit>();
         asset.InitContainer(unitConainer);
 
         unitObjects.Add(asset);
     }
 
+    public void SelecteUnit(IUnit selectedUnit)
+    {
+        unitObjects.ForEach(x => x.IsSelectedUnit(false));
+        selectedUnit.IsSelectedUnit(true);
+    }
+
     public void PlaySimulateStep()
     {
-        unitObjects.ForEach(x => x.PlaySimulateUnit());
+        unitObjects.ForEach(x => x.PlaySimulateUnit(DoLoop));
+    }
+    public void StopSimulateStep()
+    {
+        unitObjects.ForEach(x => x.StopSimulateUnit());
     }
 
     void ListenSelectedStep() => OnSend_SeletedStepNumber?.Invoke(StepNum);

@@ -228,12 +228,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6f03214de0e41d4b8265abfea1df8e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TrackItemPrefab: {fileID: 5091691131354468856, guid: 404d4763521e42f46b1d8915c5431e55, type: 3}
   ObjectName: 
   ObjectClass: 
   ObjectColor: {r: 0, g: 0, b: 0, a: 0}
   IsBG: 0
   IsVisible: 0
   IsLock: 0
+  TrackItemPrefab: {fileID: 5091691131354468856, guid: 404d4763521e42f46b1d8915c5431e55, type: 3}
+  BaseInfoPrefab: {fileID: 8615714132161854213, guid: 294fc1e8ed62e6144a8fb5a9a202f3d9, type: 3}
+  TransformCompoPrefab: {fileID: 4263519505136019658, guid: d1d0b241cf755ac4bb5422dd99d47ade, type: 3}
+  UnitImage: {fileID: 8807648495679434781}
   HandlingKeyNum: 0
-  ObjectImage: {fileID: 8807648495679434781}

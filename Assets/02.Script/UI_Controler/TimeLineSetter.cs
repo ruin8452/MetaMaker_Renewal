@@ -14,36 +14,41 @@ public class TimeLineSetter : MonoBehaviour
     public TMP_InputField CurrTimeText;
     public List<TMP_Text> TimeLineTexts;
 
-    public float DefaultTime = 1f;
+    public float DefaultTime = 3f;
 
     public Slider Indicate;
 
     public static float RunningTime;
     public static float CurrTime;
+    readonly string TIME_FORMAT = "0.000s";
     float preTime;
 
-    [HideInInspector] public UnityEvent<float, float> ChangeTimeLine;
+    bool doLoop;
 
     Coroutine SimulationCoroutine;
+
+    [HideInInspector] public UnityEvent<float> RunTimeChangeEvent;
+    [HideInInspector] public UnityEvent<float> CurrTimeChangeEvent;
 
     private void Awake()
     {
         RunningTime = DefaultTime;
         CurrTime = 0f;
-
-        GameObject.FindGameObjectWithTag(Cache.TAG_SIMUL_OBJECT).GetComponent<SimulContainer>().OnPlay_Simaulate.AddListener(ListenPlaySimulate);
-        GameObject.FindGameObjectWithTag(Cache.TAG_SIMUL_OBJECT).GetComponent<SimulContainer>().OnStop_Simaulate.AddListener(ListenStopSimulate);
     }
 
     private void Start()
     {
-        SetStepRunTimeText(RunningTime);
-        SetTimeLineText(RunningTime);
-
-        ChangeTimeLine?.Invoke(RunningTime, CurrTime);
+        SetStepRunTimeText();
+        SetTimeLineText();
     }
 
     //-----------------------------------------------------
+
+    public void OnSelecte_InputText(string text)
+    {
+        text = text.TrimEnd('s');
+        preTime = float.Parse(text);
+    }
 
     public void OnEndEdit_StepRunTimeText(string inputText)
     {
@@ -53,26 +58,22 @@ public class TimeLineSetter : MonoBehaviour
         if (!result || RunningTime <= 0)
             RunningTime = preTime;
 
-        SetStepRunTimeText(RunningTime);
-        SetTimeLineText(RunningTime);
+        SetStepRunTimeText();
+        SetTimeLineText();
+
+        Indicate.value = CurrTime / RunningTime;
+        RunTimeChangeEvent?.Invoke(RunningTime);
     }
 
-    void SetStepRunTimeText(float runningTime)
+    void SetStepRunTimeText()
     {
-        StepRunTimeText.text = runningTime.ToString("0.00s");
-        ChangeTimeLine?.Invoke(runningTime, CurrTime);
+        StepRunTimeText.text = RunningTime.ToString(TIME_FORMAT);
     }
 
-    void SetTimeLineText(float runningTime)
+    void SetTimeLineText()
     {
         for (int i = 0; i < TimeLineTexts.Count; i++)
-            TimeLineTexts[i].text = (runningTime * 0.1 * i).ToString("0.00s");
-    }
-
-    public void OnSelecte_InputText(string text)
-    {
-        text = text.TrimEnd('s');
-        preTime = float.Parse(text);
+            TimeLineTexts[i].text = (RunningTime * 0.1 * i).ToString(TIME_FORMAT);
     }
 
     //-----------------------------------------------------
@@ -88,31 +89,40 @@ public class TimeLineSetter : MonoBehaviour
         else if (CurrTime > RunningTime)
             CurrTime = RunningTime;
 
-        SetCurrTimeText(CurrTime);
         MoveIndicate(CurrTime);
+        SetCurrTimeText();
+
+        CurrTimeChangeEvent?.Invoke(Indicate.value);
     }
 
-    void SetCurrTimeText(float currTime)
+    public void OnValueChange_MoveIndicate(float percent)
     {
-        CurrTime = currTime;
-        CurrTimeText.text = currTime.ToString("0.00s");
-        ChangeTimeLine?.Invoke(RunningTime, currTime);
+        CurrTime = RunningTime * percent;
+        SetCurrTimeText();
+        
+        CurrTimeChangeEvent?.Invoke(percent);
+    }
+
+    void SetCurrTimeText()
+    {
+        CurrTimeText.text = CurrTime.ToString(TIME_FORMAT);
     }
 
     void MoveIndicate(float currTime) => Indicate.value = currTime / RunningTime;
 
-    public void OnValueChange_MoveIndicate(float percent) => SetCurrTimeText(RunningTime * percent);
+    public void OnToggle_DoLoop(bool doLoop) => this.doLoop = doLoop;
 
-    //-----------------------------------------------------
 
-    public void ListenPlaySimulate(bool doLoop)
+    // --------------------------------------------------------------
+    // Simulator-----------------------------------------------------
+    public void OnClick_PlaySimulate()
     {
         if (SimulationCoroutine != null)
             StopCoroutine(SimulationCoroutine);
 
         SimulationCoroutine = StartCoroutine(PlaySimulate(doLoop));
     }
-    public void ListenStopSimulate()
+    public void OnClick_StopSimulate()
     {
         if(SimulationCoroutine != null)
             StopCoroutine(SimulationCoroutine);
@@ -124,22 +134,22 @@ public class TimeLineSetter : MonoBehaviour
         {
             CurrTime = 0f;
 
-            SetCurrTimeText(CurrTime);
+            SetCurrTimeText();
             MoveIndicate(CurrTime);
 
-            while (CurrTime < RunningTime)
+            while (CurrTime <= RunningTime)
             {
                 CurrTime += Time.deltaTime;
 
-                SetCurrTimeText(CurrTime);
+                SetCurrTimeText();
                 MoveIndicate(CurrTime);
 
                 yield return null;
             }
         } while (doLoop);
 
-
-        SetCurrTimeText(0f);
+        CurrTime = 0f;
+        SetCurrTimeText();
         MoveIndicate(0f);
     }
 }

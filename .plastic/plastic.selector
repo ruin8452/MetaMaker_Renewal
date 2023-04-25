@@ -1,0 +1,4 @@
+repository "AST_MetaMaker_2020.3.33f1@PersonalSW@cloud"
+  path "/"
+    br "/main"
+    co "/main"

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 373991372258899538}
   - component: {fileID: 373991372258899537}
+  - component: {fileID: 6481379298976705425}
   m_Layer: 0
   m_Name: '[SimulObject] Step'
   m_TagString: Untagged
@@ -43,7 +44,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a53f348056808f4bafe9178ae7237c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StepNum: 0
-  isLoop: 0
   StepIndexBoxPrefab: {fileID: 5475931143066445121, guid: 40dc65e8698e7ea4fb80baf2e9ee0565, type: 3}
-  StepsAreaTransform: {fileID: 0}
+  StepNum: 0
+  DoLoop: 0
+  HandlingUnitNum: 0
+  OnSend_SeletedStepNumber:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSend_ChangeStepOrder:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &6481379298976705425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 373991372258899539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fafe2cfe61f6974895a912c3755e8f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AllowSwitchOff: 0

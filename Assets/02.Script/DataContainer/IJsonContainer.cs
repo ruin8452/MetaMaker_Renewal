@@ -4,9 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets._02.Script.DataContainer
+public interface IJsonContainer
 {
-    public interface IJsonContainer
-    {
-    }
 }
